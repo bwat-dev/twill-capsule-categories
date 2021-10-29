@@ -1,3 +1,2 @@
 <?php
 
-//Route::module('categories');
