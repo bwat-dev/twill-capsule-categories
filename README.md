@@ -41,33 +41,5 @@ class Page extends Model implements Sortable
 {
     use HasCategories;
 ...
-```
 
-## Repository
 
-import HandleCategories trait in your Repository :
-```php
-<?php
-
-namespace App\Twill\Capsules\Pages\Repositories;
-
-use A17\Twill\Repositories\ModuleRepository;
-use App\Twill\Capsules\Categories\Repositories\Behaviors\HandleCategories;
-use App\Twill\Capsules\Pages\Models\Page;
-
-class PageRepository extends ModuleRepository
-{
-    use HandleCategories;
-
-    protected $browsers = [
-        'categories' => [
-            'routePrefix' => 'pages'
-        ]
-    ];
-
-    public function __construct(Page $model)
-    {
-        $this->model = $model;
-    }
-}
-```
