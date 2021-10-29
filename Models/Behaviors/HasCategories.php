@@ -4,33 +4,34 @@
 namespace App\Twill\Capsules\Categories\Models\Behaviors;
 
 
-use A17\Twill\Models\RelatedItem;
-use Illuminate\Support\Arr;
+use App\Twill\Capsules\Categories\Models\Category;
+use App\Twill\Capsules\Categories\Models\Categoryable;
 use Illuminate\Support\Collection;
 
 trait HasCategories
 {
-    public function saveRelated($items)
+
+    public function categories()
     {
-        RelatedItem::where([
-            'subject_id' => $this->getKey(),
-            'subject_type' => $this->getMorphClass(),
-        ])->delete();
+        return $this->morphToMany(Category::class, 'categoryable');
+    }
+    public function saveCategories($items)
+    {
 
-        $position = 1;
+        Collection::make($items)->each(function ($values)  {
+            Categoryable::where([
+                'category_id' => $values['id'],
+                'categoryable_id' => $this->id,
+                'categoryable_type' => $this->getMorphClass(),
+            ])->delete();
+        });
 
-        Collection::make($items)->map(function ($item) {
-            return Arr::only($item, ['endpointType', 'id']);
-        })->each(function ($values) use ($browser_name, &$position) {
-            RelatedItem::create([
-                'subject_id' => $this->getKey(),
-                'subject_type' => $this->getMorphClass(),
-                'related_id' => $values['id'],
-                'related_type' => $values['endpointType'],
-                'browser_name' => $browser_name,
-                'position' => $position,
+        Collection::make($items)->each(function ($values)  {
+            Categoryable::create([
+                'category_id' => $values['id'],
+                'categoryable_id' => $this->id,
+                'categoryable_type' => $this->getMorphClass(),
             ]);
-            $position++;
         });
     }
 }

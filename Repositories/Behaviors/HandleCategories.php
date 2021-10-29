@@ -14,8 +14,6 @@ trait HandleCategories
      */
     public function afterSaveHandleCategories($object, $fields)
     {
-        if(isset($fields['browsers']['categories'])) {
-            $object->saveCategories($fields['browsers']['categories'] ?? []);
-        }
+        $object->saveCategories($fields['browsers']['categories'] ?? []);
     }
 }

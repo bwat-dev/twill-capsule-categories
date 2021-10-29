@@ -12,8 +12,8 @@ Route::group([
 Route::module('pages');
 ```
 
+## In twill-navigation
 ```php
-// in twill-navigation.php
     'pages' => [
         'title' => 'Pages',
         'module' => true,
@@ -25,8 +25,49 @@ Route::module('pages');
             ],
             'categories' => [
                 'title' => 'Catégories',
-                'module' => true
+                'module' => true,
+                'resource' => 'pages' //optional
             ]
         ]
     ],
+```
+## Model
+
+import HasCategories trait in your model :
+```php
+use App\Twill\Capsules\Categories\Models\Behaviors\HasCategories;
+
+class Page extends Model implements Sortable
+{
+    use HasCategories;
+...
+```
+
+## Repository
+
+import HandleCategories trait in your Repository :
+```php
+<?php
+
+namespace App\Twill\Capsules\Pages\Repositories;
+
+use A17\Twill\Repositories\ModuleRepository;
+use App\Twill\Capsules\Categories\Repositories\Behaviors\HandleCategories;
+use App\Twill\Capsules\Pages\Models\Page;
+
+class PageRepository extends ModuleRepository
+{
+    use HandleCategories;
+
+    protected $browsers = [
+        'categories' => [
+            'routePrefix' => 'pages'
+        ]
+    ];
+
+    public function __construct(Page $model)
+    {
+        $this->model = $model;
+    }
+}
 ```
