@@ -37,6 +37,10 @@ class CategoryController extends ModuleController
         return parent::filterScope($prepend);
     }
 
+    /**
+     * Resolve resource
+     * @return int|mixed|string
+     */
     protected function getResource()
     {
         $routeName = $this->request->route()->getName();
