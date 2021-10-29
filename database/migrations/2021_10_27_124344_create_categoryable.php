@@ -13,9 +13,9 @@ class CreateCategoriable extends Migration
      */
     public function up()
     {
-        Schema::create('categoriable', function (Blueprint $table) {
+        Schema::create('categoryable', function (Blueprint $table) {
             $table->id();
-            $table->morphs('categoriable');
+            $table->morphs('categoryable');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateCategoriable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categoriable');
+        Schema::dropIfExists('categoryable');
     }
 }
